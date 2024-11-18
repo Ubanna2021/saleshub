@@ -1,0 +1,8 @@
+rgName = "rg-saleshubapp"
+location = "West Europe"
+serviceconnection = "az-deployment"
+clusterName = "k8s-salehub-cluster"
+env = "dev"
+acrName = "arcsaleshubcontainerrepo"
+kv-name = "kv-salesjub-vault"
+ssh_key_name = "k8s-ssh-key"

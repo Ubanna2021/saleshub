@@ -1,0 +1,48 @@
+# azure-pipelines-backend.yml
+trigger:
+  branches:
+    include:
+      - main
+
+stages:
+  - stage: DeployToDev
+    displayName: "Deploy Backend to Development"
+    jobs:
+      - job: deployDev
+        displayName: "Deploy to Dev Namespace"
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: Kubernetes@1
+            displayName: "Deploy Backend to Dev Namespace"
+            inputs:
+              connectionType: 'KubernetesServiceConnection'
+              kubernetesServiceEndpoint: '<DEV_K8S_SERVICE_CONNECTION>'
+              namespace: 'dev-backend'
+              command: 'apply'
+              arguments: '-f k8s/backend-deployment.yml'
+
+  - stage: DeployToProd
+    displayName: "Deploy Backend to Production"
+    dependsOn: DeployToDev
+    condition: succeeded()
+    jobs:
+      - deployment: deployProd
+        displayName: "Deploy to Prod Namespace"
+        pool:
+          vmImage: 'ubuntu-latest'
+        environment: 'prod'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: Kubernetes@1
+                  displayName: "Deploy Backend to Prod Namespace"
+                  inputs:
+                    connectionType: 'KubernetesServiceConnection'
+                    kubernetesServiceEndpoint: '<PROD_K8S_SERVICE_CONNECTION>'
+                    namespace: 'prod-backend'
+                    command: 'apply'
+                    arguments: '-f k8s/backend-deployment.yml'
+
+# Add manual approval requirement for production environment in Azure DevOps

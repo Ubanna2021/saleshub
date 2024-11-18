@@ -1,0 +1,63 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: DeployAgent
+    displayName: "Deploy Azure Infrastructure"
+    jobs:
+      - job: DeployAKS
+        displayName: "Deploy AKS cluster using Terraform"
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          # Checkout the code repository containing Terraform configuration
+          - checkout: self
+
+          # Install Terraform
+          - task: TerraformInstaller@1
+            inputs:
+              terraformVersion: 'latest'
+
+          # Initialize Terraform
+          - task: TerraformTaskV4@4
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'AzureDevopsCon1'
+              backendAzureRmResourceGroupName: 'rgtest1'
+              backendAzureRmStorageAccountName: 'strgtestdevopagent1'
+              backendAzureRmContainerName: 'terraform01'
+              backendAzureRmKey: 'terraform.tfstate'
+            displayName: "Initialize Terraform"
+
+          # Plan Terraform deployment
+          - task: TerraformTaskV4@4
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              commandOptions: '-out=tfplan'
+              environmentServiceNameAzureRM: 'AzureDevopsCon1'
+            displayName: "Plan Terraform"
+
+          # Apply Terraform to create VM
+          - task: TerraformTaskV4@4
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              commandOptions: '-auto-approve tfplan'
+              environmentServiceNameAzureRM: 'AzureDevopsCon1'
+            displayName: "Apply Terraform"
+
+          # Capture Terraform output
+          - script: |
+              terraform output -json > $(TERRAFORM_OUTPUT_FILE)
+            displayName: "Capture Terraform Output"
+
+          # Publish Terraform output as a pipeline artifact
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(TERRAFORM_OUTPUT_FILE)
+              artifactName: "terraformOutput"
