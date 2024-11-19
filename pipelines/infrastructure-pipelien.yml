@@ -75,7 +75,7 @@ stages:
            
       - task: TerraformTaskV4@4
         inputs:
-          workingDirectory: $(System.DefaultWorkingDirectory)saleshub/infrastructure
+ #         workingDirectory: $(System.DefaultWorkingDirectory)saleshub/infrastructure
           provider: 'azurerm'
           command: 'init'
           backendServiceArm: 'AzureDevopsCon1'
