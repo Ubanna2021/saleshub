@@ -17,8 +17,9 @@ stages:
         steps:
           - task: AzureCLI@2
             inputs:
-            azureSubscription:
-            scriptType: bash
+            azureSubscription: $serviceConnection
+            scriptType: 'bash'
+            scriptLocation: 'inlineScript'
             inlineScript: |
               # Check if resource group for he state file exist
               echo "Checking if resource group for the state file exist"
