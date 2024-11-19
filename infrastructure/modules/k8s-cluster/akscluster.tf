@@ -24,6 +24,13 @@ resource "azurerm_role_assignment" "kvadmin" {
   
 }
 
+resource "azurerm_role_assignment" "kvreader" {
+  scope = azurerm_key_vault.kv.id
+  role_definition_name = "Key Vault Reader"
+  principal_id = "97481bdd-3621-4d84-bdb5-a55a739c3e78"
+  
+}
+
 # Generate SSH Key Pair
 resource "tls_private_key" "ssh_key" {
   algorithm = "RSA"
