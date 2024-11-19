@@ -84,6 +84,11 @@ stages:
           backendAzureRmKey: $(storageKey)
         displayName: "Initialize Terraform"
 
+      - script: |
+        pwd
+        ls
+
+
       # Plan Terraform deployment
       - task: TerraformTaskV4@4
         inputs:
