@@ -97,7 +97,7 @@ stages:
           provider: 'azurerm'
           command: 'plan'
           commandOptions: '-var-file $(varFile)'
-#          environmentServiceNameAzureRM: 'AzureDevopsCon1'
+          environmentServiceNameAzureRM: $(serviceConnection)
           backendServiceArm: $(serviceConnection)
           backendAzureRmResourceGroupName: $(resourceGroupName)
           backendAzureRmStorageAccountName: $(storageAccountName)
@@ -112,7 +112,7 @@ stages:
           provider: 'azurerm'
           command: 'apply'
           commandOptions: '-var-file $(varFile)'
-#          environmentServiceNameAzureRM: 'AzureDevopsCon1'
+          environmentServiceNameAzureRM: $(serviceConnection)
           backendServiceArm: $(serviceConnection)
           backendAzureRmResourceGroupName: $(resourceGroupName)
           backendAzureRmStorageAccountName: $(storageAccountName)
