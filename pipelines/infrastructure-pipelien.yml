@@ -7,7 +7,7 @@ pool:
   vmImage: ubuntu-latest
 
 parameters: 
-  - template: parameters.yaml
+  - template: parameters.yml
 stages:
   
   - stage: SetupBackend
@@ -18,7 +18,7 @@ stages:
           - task: AzureCLI@2
             inputs:
             azureSubscription:
-            scriptType:
+            scriptType: bash
             inlineScript: |
               # Check if resource group for he state file exist
               echo "Checking if resource group for the state file exist"
