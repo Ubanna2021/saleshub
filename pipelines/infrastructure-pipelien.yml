@@ -78,11 +78,11 @@ stages:
           workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure
           provider: 'azurerm'
           command: 'init'
-          backendServiceArm: 'AzureDevopsCon1'
-          backendAzureRmResourceGroupName: 'tfstate-rg'
-          backendAzureRmStorageAccountName: 'tfstatestrg20241119'
-          backendAzureRmContainerName: 'tfstate-container'
-          backendAzureRmKey: 'tfstate-container'
+          backendServiceArm: $(serviceConnection)
+          backendAzureRmResourceGroupName: $(resourceGroupName)
+          backendAzureRmStorageAccountName: $(storageAccountName)
+          backendAzureRmContainerName: $(containerName)
+          backendAzureRmKey: $(storageKey)
         displayName: "Initialize Terraform"
 
       - script: |
@@ -93,21 +93,31 @@ stages:
       # Plan Terraform deployment
       - task: TerraformTaskV4@4
         inputs:
-          workingDirectory: $(System.DefaultWorkingDirectory)saleshub/infrastructure
+          workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure
           provider: 'azurerm'
           command: 'plan'
           commandOptions: '-var-file $(varFile)'
-          environmentServiceNameAzureRM: 'AzureDevopsCon1'
+#          environmentServiceNameAzureRM: 'AzureDevopsCon1'
+          backendServiceArm: $(serviceConnection)
+          backendAzureRmResourceGroupName: $(resourceGroupName)
+          backendAzureRmStorageAccountName: $(storageAccountName)
+          backendAzureRmContainerName: $(containerName)
+          backendAzureRmKey: $(storageKey)
         displayName: "Plan Terraform"
 
       # Apply Terraform to create VM
       - task: TerraformTaskV4@4
         inputs:
-          workingDirectory: $(System.DefaultWorkingDirectory)saleshub/infrastructure
+          workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure
           provider: 'azurerm'
           command: 'apply'
           commandOptions: '-var-file $(varFile)'
-          environmentServiceNameAzureRM: 'AzureDevopsCon1'
+#          environmentServiceNameAzureRM: 'AzureDevopsCon1'
+          backendServiceArm: $(serviceConnection)
+          backendAzureRmResourceGroupName: $(resourceGroupName)
+          backendAzureRmStorageAccountName: $(storageAccountName)
+          backendAzureRmContainerName: $(containerName)
+          backendAzureRmKey: $(storageKey)
         displayName: "Apply Terraform"
 
       # Capture Terraform output
