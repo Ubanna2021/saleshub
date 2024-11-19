@@ -70,7 +70,6 @@ stages:
       - task: TerraformInstaller@1
         inputs:
           terraformVersion: 'latest'
-          workingDirectory: $(System.DefaultWorkingDirectory)\infrastructure
 
       # Initialize Terraform
       - task: TerraformTaskV4@4
