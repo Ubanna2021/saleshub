@@ -74,7 +74,7 @@ stages:
       # Initialize Terraform
       - task: TerraformTaskV4@4
         inputs:
-          wokingDirectory: $(System.DefaultWorkingDirectory)\infrastructure\
+          workingDirectory: $(System.DefaultWorkingDirectory)\infrastructure
           provider: 'azurerm'
           command: 'init'
           backendServiceArm: $(serviceConnection)
@@ -85,14 +85,14 @@ stages:
         displayName: "Initialize Terraform"
 
       - script: |
-        pwd
-        ls
+          pwd
+          ls
 
 
       # Plan Terraform deployment
       - task: TerraformTaskV4@4
         inputs:
-          wokingDirectory: $(System.DefaultWorkingDirectory)\infrastructure\
+          workingDirectory: $(System.DefaultWorkingDirectory)\infrastructure
           provider: 'azurerm'
           command: 'plan'
           commandOptions: '-var-file $(varFile)'
@@ -102,7 +102,7 @@ stages:
       # Apply Terraform to create VM
       - task: TerraformTaskV4@4
         inputs:
-          wokingDirectory: $(System.DefaultWorkingDirectory)\infrastructure\
+          workingDirectory: $(System.DefaultWorkingDirectory)\infrastructure
           provider: 'azurerm'
           command: 'apply'
           commandOptions: '-var-file $(varFile)'
