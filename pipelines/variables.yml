@@ -1,8 +1,8 @@
 variables:  
   serviceConnection: 'AzureDevopsCon1'
-  resourceGroupName: 'tfstaterg'
+  resourceGroupName: 'tfstate-rg'
   location: 'westeurope'
-  storageAccountName: 'tfstatecontainer20241119'
+  storageAccountName: 'tfstate-strg20241119'
   containerName: 'tfstate-container'
   storageKey: 'terraform.tfstate'
   varFile: 'dev-variables.tfvars'
