@@ -72,16 +72,17 @@ stages:
           terraformVersion: 'latest'
           
       # Initialize Terraform
+           
       - task: TerraformTaskV4@4
         inputs:
           workingDirectory: $(System.DefaultWorkingDirectory)saleshub/infrastructure
           provider: 'azurerm'
           command: 'init'
-          backendServiceArm: $(serviceConnection)
-          backendAzureRmResourceGroupName: $(resourceGroupName)
-          backendAzureRmStorageAccountName: $(storageAccountName)
-          backendAzureRmContainerName: $(containerName)
-          backendAzureRmKey: $(storageKey)
+          backendServiceArm: 'AzureDevopsCon1'
+          backendAzureRmResourceGroupName: 'tfstate-rg'
+          backendAzureRmStorageAccountName: 'tfstatestrg20241119'
+          backendAzureRmContainerName: 'tfstate-container'
+          backendAzureRmKey: 'tfstate-container'
         displayName: "Initialize Terraform"
 
       - script: |
