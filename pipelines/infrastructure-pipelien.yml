@@ -77,11 +77,11 @@ stages:
           wokingDirectory: $(System.DefaultWorkingDirectory)\infrastructure\
           provider: 'azurerm'
           command: 'init'
-          backendServiceArm: 'AzureDevopsCon1'
-          backendAzureRmResourceGroupName: 'rgtest1'
-          backendAzureRmStorageAccountName: 'strgtestdevopagent1'
-          backendAzureRmContainerName: 'terraform01'
-          backendAzureRmKey: 'terraform.tfstate'
+          backendServiceArm: $(serviceConnection)
+          backendAzureRmResourceGroupName: $(resourceGroupName)
+          backendAzureRmStorageAccountName: $(storageAccountName)
+          backendAzureRmContainerName: $(containerName)
+          backendAzureRmKey: $(storageKey)
         displayName: "Initialize Terraform"
 
       # Plan Terraform deployment

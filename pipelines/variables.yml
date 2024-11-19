@@ -8,8 +8,4 @@ variables:
   varFile: 'dev-variables.tfvars'
   storageSKU: 'Standard_LRS'
   environmentServiceNameAzureRM: ''
-  backendServiceArm: 'AzureDevopsCon1'
-  backendAzureRmResourceGroupName: 'rgtest1'
-  backendAzureRmStorageAccountName: 'strgtestdevopagent1'
-  backendAzureRmContainerName: 'terraform01'
-  backendAzureRmKey: 'terraform.tfstate'
+  
