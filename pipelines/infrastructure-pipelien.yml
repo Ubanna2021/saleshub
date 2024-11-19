@@ -85,8 +85,8 @@ stages:
         displayName: "Initialize Terraform"
 
       - script: |
-        pwd
-        ls
+          pwd
+          ls
 
 
       # Plan Terraform deployment
