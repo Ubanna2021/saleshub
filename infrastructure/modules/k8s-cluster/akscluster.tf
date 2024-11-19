@@ -20,14 +20,14 @@ resource "azurerm_key_vault" "kv" {
 resource "azurerm_role_assignment" "kvadmin" {
   scope = azurerm_key_vault.kv.id
   role_definition_name = "Key Vault Administrator"
-  principal_id = "97481bdd-3621-4d84-bdb5-a55a739c3e78"
+  principal_id = "8984d2a4-a264-496c-8512-eecba34de8ca"
   
 }
 
 resource "azurerm_role_assignment" "kvreader" {
   scope = azurerm_key_vault.kv.id
   role_definition_name = "Key Vault Reader"
-  principal_id = "97481bdd-3621-4d84-bdb5-a55a739c3e78"
+  principal_id = "8984d2a4-a264-496c-8512-eecba34de8ca"
   
 }
 
