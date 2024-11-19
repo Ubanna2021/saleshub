@@ -84,6 +84,7 @@ stages:
       # Plan Terraform deployment
       - task: TerraformTaskV4@4
         inputs:
+          wokingDirectory: $(System.DefaultWorkingDirectory)\saleshub\infrastructure
           provider: 'azurerm'
           command: 'plan'
           commandOptions: '-var-file $(varFile)'
