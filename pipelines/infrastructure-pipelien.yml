@@ -7,9 +7,9 @@ pool:
   vmImage: ubuntu-latest
 
 parameters: 
-  - template: parameters.yml
+  - template: variables.yml
+
 stages:
-  
   - stage: SetupBackend
     displayName: "Backend Setup"
     jobs:
@@ -17,38 +17,38 @@ stages:
         steps:
           - task: AzureCLI@2
             inputs:
-            azureSubscription: $serviceConnection
+            azureSubscription: $((serviceConnection)
             scriptType: 'bash'
             scriptLocation: 'inlineScript'
             inlineScript: |
               # Check if resource group for he state file exist
               echo "Checking if resource group for the state file exist"
-              if ! az group show --name $resourceGroupName --output none 2>dev/null; then
-                echo "Creating the resource group $resourceGroupName"
-                az group create --name $resourceGroupName --location $location
+              if ! az group show --name $(resourceGroupName) --output none 2>dev/null; then
+                echo "Creating the resource group $(resourceGroupName)"
+                az group create --name $(resourceGroupName) --location $(location)
               else
                 echo "resource Group $resourceGroupName already exist"
               fi
 
               # Check if storage account for state file alrewady exist
               echo "Checking if storage accountr already exist"
-              checkStorageAccount=$(az storage account check-name --name $storageAccountName --query 'nameAvailable' -o tsv)
+              checkStorageAccount=$(az storage account check-name --name $(storageAccountName) --query 'nameAvailable' -o tsv)
               if [checkStorageAccount == 'false']
               then 
-                echo "The storage account $storageAccountName already exist"
+                echo "The storage account $(storageAccountName) already exist"
               else 
-                echo "Creating storage account $storageAccountName"
-                az storage account create --name $storageAccountName --resource-group $resourceGroupName --location $location --sku $storageSKU
+                echo "Creating storage account $(storageAccountName)"
+                az storage account create --name $(storageAccountName) --resource-group $(resourceGroupName) --location $(location) --sku $(storageSKU)
               fi 
 
               # Checkis terraform statefilr container exists 
               echo "Check if storage account container for state file exist"
-              connection_string=$(az storage account show-connection-string --name $storageAccountName --query connectionString --output tsv)
-              if az storage container list --connection-string $connection_string --query "[?name=='$containerName']" --output tsv | grep -q "$containerName"; then 
+              connection_string=$(az storage account show-connection-string --name $(storageAccountName) --query connectionString --output tsv)
+              if az storage container list --connection-string $connection_string --query "[?name=='$(containerName)']" --output tsv | grep -q "$(containerName)"; then 
                 echo " Container $containername already esist"
               else
                 echo "Create storage account container for state file"
-                az storage container create --name $containerName --connection-string $connection_string
+                az storage container create --name $(containerName) --connection-string $connection_string
               fi
   
   
@@ -85,7 +85,7 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'plan'
-              commandOptions: '-var-file $varFile -auto-approve tfplan'
+              commandOptions: '-var-file $(varFile) -auto-approve tfplan'
               environmentServiceNameAzureRM: 'AzureDevopsCon1'
             displayName: "Plan Terraform"
 
